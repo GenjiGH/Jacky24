@@ -88,6 +88,14 @@
       padding: 20px;
       text-align: center;
       max-width: 300px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .card h1 {
@@ -98,6 +106,62 @@
     .card p {
       color: #555;
     }
+
+    .floating-hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .floating-hearts span {
+      position: absolute;
+      bottom: -50px;
+      width: 20px;
+      height: 20px;
+      background: red;
+      opacity: 0.7;
+      transform: rotate(-45deg);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .floating-hearts span::before,
+    .floating-hearts span::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .floating-hearts span::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-hearts span::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateX(0) translateY(0) rotate(-45deg);
+        opacity: 0.7;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(calc(-50px + 100px * var(--random-x)))
+          translateY(-100vh) rotate(-45deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -106,6 +170,9 @@
     <div class="progress-bar">
       <div class="progress" id="progress"></div>
     </div>
+  </div>
+  <div class="floating-hearts" id="floating-hearts">
+    <!-- Corazones generados con JavaScript -->
   </div>
   <div class="card" id="card">
     <h1>Para Jacky 💖</h1>
@@ -120,6 +187,7 @@
     const progress = document.getElementById('progress');
     const loader = document.getElementById('loader');
     const card = document.getElementById('card');
+    const floatingHearts = document.getElementById('floating-hearts');
 
     let width = 0;
 
@@ -127,12 +195,20 @@
       if (width >= 100) {
         clearInterval(interval);
         loader.style.display = 'none';
-        card.style.display = 'block';
+        card.classList.add('show');
       } else {
         width += 1;
         progress.style.width = width + '%';
       }
     }, 50);
+
+    // Generar corazones flotantes
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('span');
+      heart.style.setProperty('--random-x', Math.random());
+      heart.style.left = Math.random() * 100 + 'vw';
+      floatingHearts.appendChild(heart);
+    }
   </script>
 </body>
 </html>
