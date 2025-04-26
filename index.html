@@ -80,14 +80,45 @@
       transition: width 0.1s linear;
     }
 
+    #envelope {
+      display: none;
+      position: relative;
+      width: 250px;
+      height: 150px;
+      background: #fef3f0;
+      border: 2px solid #ff6f61;
+      border-radius: 0 0 10px 10px;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    #envelope::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ff6f61;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      transition: transform 1s ease;
+      z-index: 6;
+    }
+
+    #envelope.open::before {
+      transform: rotateX(180deg);
+    }
+
     .card {
       display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: white;
-      border-radius: 20px;
+      border-radius: 10px;
+      padding: 20px;
       box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-      padding: 30px;
       text-align: center;
-      max-width: 400px;
       opacity: 0;
       transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
@@ -101,70 +132,36 @@
 
     .card h1 {
       color: #ff6f61;
-      margin-bottom: 20px;
-      font-size: 24px;
+      margin-bottom: 10px;
     }
 
     .card p {
       color: #555;
-      font-size: 18px;
-      line-height: 1.6;
+      font-size: 16px;
     }
 
-    .floating-hearts {
+    .flower {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 0;
+      bottom: 0;
+      width: 50px;
+      height: 50px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Red_flower.svg/1200px-Red_flower.svg.png') no-repeat center/contain;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
     }
 
-    .floating-hearts span {
-      position: absolute;
-      bottom: -50px;
-      width: 20px;
-      height: 20px;
-      background: red;
-      opacity: 0.7;
-      transform: rotate(-45deg);
-      animation: float 6s infinite ease-in-out;
+    .flower.left {
+      left: 20%;
     }
 
-    .floating-hearts span::before,
-    .floating-hearts span::after {
-      content: '';
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-      position: absolute;
+    .flower.right {
+      right: 20%;
     }
 
-    .floating-hearts span::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .floating-hearts span::after {
-      left: 10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateX(0) translateY(0) rotate(-45deg);
-        opacity: 0.7;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateX(calc(-50px + 100px * var(--random-x)))
-          translateY(-100vh) rotate(-45deg);
-        opacity: 0;
-      }
+    .flower.show {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -175,26 +172,32 @@
       <div class="progress" id="progress"></div>
     </div>
   </div>
-  <div class="floating-hearts" id="floating-hearts"></div>
-  <div class="card" id="card">
-    <h1>Jacky 💖</h1>
-    <p>
+  <div id="envelope">
+    <div class="card" id="card">
+      <h1>Para Jacky 💖</h1>
+      <p>
       Me alegro de haberte conocido, nunca pense conocer a
       una chica tan increible como tu, inteligente, muy creativa,
       linda, cariñosa y chiquita ^^ pero con un gran corazón.<br>
       <br>
       Estoy feliz de estar contigo, y soy feliz al ver todo
       lo que has logrado y seguirás logrando! Y quiero poner
-      más cosas pero no se si pueda caber en la carta :p<br>
+      más cosas pero no me alcanzaría la pagina ;p<br>
       <br>
-      Te amo más de lo que las palabras pueden expresar.<br>❤️
-    </p>
+      Te amo más de lo que las palabras pueden expresar.<br>💜
+      </p>
+    </div>
   </div>
+  <div class="flower left" id="flower-left"></div>
+  <div class="flower right" id="flower-right"></div>
+
   <script>
     const progress = document.getElementById('progress');
     const loader = document.getElementById('loader');
+    const envelope = document.getElementById('envelope');
     const card = document.getElementById('card');
-    const floatingHearts = document.getElementById('floating-hearts');
+    const flowerLeft = document.getElementById('flower-left');
+    const flowerRight = document.getElementById('flower-right');
 
     let width = 0;
 
@@ -202,22 +205,19 @@
       if (width >= 100) {
         clearInterval(interval);
         loader.style.display = 'none';
-        card.classList.add('show');
-        generateFloatingHearts();
+        envelope.style.display = 'block';
+        setTimeout(() => {
+          envelope.classList.add('open');
+          card.classList.add('show');
+          flowerLeft.classList.add('show');
+          flowerRight.classList.add('show');
+        }, 1000);
       } else {
         width += 1;
         progress.style.width = width + '%';
       }
     }, 50);
-
-    function generateFloatingHearts() {
-      for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('span');
-        heart.style.setProperty('--random-x', Math.random());
-        heart.style.left = Math.random() * 100 + 'vw';
-        floatingHearts.appendChild(heart);
-      }
-    }
   </script>
 </body>
 </html>
+
