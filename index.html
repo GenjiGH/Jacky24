@@ -80,71 +80,51 @@
       transition: width 0.1s linear;
     }
 
-    #envelope {
+    .card-container {
       display: none;
-      position: relative;
-      width: 250px;
-      height: 150px;
-      background: #fef3f0;
-      border: 2px solid #ff6f61;
-      border-radius: 0 0 10px 10px;
-      overflow: hidden;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
       z-index: 5;
     }
 
-    #envelope::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: #ff6f61;
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      transition: transform 1s ease;
-      z-index: 6;
-    }
-
-    #envelope.open::before {
-      transform: rotateX(180deg);
-    }
-
     .card {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
       background: white;
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: 20px;
       box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+      padding: 30px;
       text-align: center;
+      max-width: 400px;
       opacity: 0;
       transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
     }
 
     .card.show {
-      display: block;
       opacity: 1;
       transform: translateY(0);
     }
 
     .card h1 {
       color: #ff6f61;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 24px;
     }
 
     .card p {
       color: #555;
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1.6;
     }
 
     .flower {
       position: absolute;
-      bottom: 0;
-      width: 50px;
-      height: 50px;
+      bottom: 20%;
+      width: 80px;
+      height: 80px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Red_flower.svg/1200px-Red_flower.svg.png') no-repeat center/contain;
       opacity: 0;
       transform: translateY(50px);
@@ -152,11 +132,11 @@
     }
 
     .flower.left {
-      left: 20%;
+      left: 10%;
     }
 
     .flower.right {
-      right: 20%;
+      right: 10%;
     }
 
     .flower.show {
@@ -172,7 +152,8 @@
       <div class="progress" id="progress"></div>
     </div>
   </div>
-  <div id="envelope">
+
+  <div class="card-container" id="card-container">
     <div class="card" id="card">
       <h1>Para Jacky 💖</h1>
       <p>
@@ -187,14 +168,14 @@
       Te amo más de lo que las palabras pueden expresar.<br>💜
       </p>
     </div>
+    <div class="flower left" id="flower-left"></div>
+    <div class="flower right" id="flower-right"></div>
   </div>
-  <div class="flower left" id="flower-left"></div>
-  <div class="flower right" id="flower-right"></div>
 
   <script>
     const progress = document.getElementById('progress');
     const loader = document.getElementById('loader');
-    const envelope = document.getElementById('envelope');
+    const cardContainer = document.getElementById('card-container');
     const card = document.getElementById('card');
     const flowerLeft = document.getElementById('flower-left');
     const flowerRight = document.getElementById('flower-right');
@@ -205,13 +186,12 @@
       if (width >= 100) {
         clearInterval(interval);
         loader.style.display = 'none';
-        envelope.style.display = 'block';
+        cardContainer.style.display = 'flex';
         setTimeout(() => {
-          envelope.classList.add('open');
           card.classList.add('show');
           flowerLeft.classList.add('show');
           flowerRight.classList.add('show');
-        }, 1000);
+        }, 500);
       } else {
         width += 1;
         progress.style.width = width + '%';
@@ -220,4 +200,3 @@
   </script>
 </body>
 </html>
-
