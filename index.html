@@ -83,15 +83,14 @@
     .card {
       display: none;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+      padding: 30px;
       text-align: center;
-      max-width: 300px;
+      max-width: 400px;
       opacity: 0;
       transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
-      z-index: 1;
     }
 
     .card.show {
@@ -102,11 +101,14 @@
 
     .card h1 {
       color: #ff6f61;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 24px;
     }
 
     .card p {
       color: #555;
+      font-size: 18px;
+      line-height: 1.6;
     }
 
     .floating-hearts {
@@ -173,17 +175,14 @@
       <div class="progress" id="progress"></div>
     </div>
   </div>
-  <div class="floating-hearts" id="floating-hearts">
-    <!-- Corazones generados con JavaScript -->
-  </div>
+  <div class="floating-hearts" id="floating-hearts"></div>
   <div class="card" id="card">
     <h1>Para Jacky 💖</h1>
     <p>
-      Jacky, <br>
-      Me alegro de haberte conocido, nunca pense conocer a
-      una chica tan increible como tu, inteligente, muy crativa,
-      linda, cariñosa y chiquita ^^, pero con un gran corazón.
-      Te amo más de lo que las palabras pueden expresar. ❤️
+      Querida Jacky, <br>
+      Cada día contigo es un regalo lleno de amor y felicidad. 
+      Gracias por ser mi sol en los días nublados. 
+      Eres mi todo, y te amo con todo mi corazón. ❤️
     </p>
   </div>
   <script>
@@ -199,18 +198,20 @@
         clearInterval(interval);
         loader.style.display = 'none';
         card.classList.add('show');
+        generateFloatingHearts();
       } else {
         width += 1;
         progress.style.width = width + '%';
       }
     }, 50);
 
-    // Generar corazones flotantes
-    for (let i = 0; i < 20; i++) {
-      const heart = document.createElement('span');
-      heart.style.setProperty('--random-x', Math.random());
-      heart.style.left = Math.random() * 100 + 'vw';
-      floatingHearts.appendChild(heart);
+    function generateFloatingHearts() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('span');
+        heart.style.setProperty('--random-x', Math.random());
+        heart.style.left = Math.random() * 100 + 'vw';
+        floatingHearts.appendChild(heart);
+      }
     }
   </script>
 </body>
