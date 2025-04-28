@@ -1,202 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Para Jacky</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(to bottom, #9665db, #dbc4fa);
-      overflow: hidden;
-    }
-
-    #loader {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      z-index: 10;
-    }
-
-    .heart {
-      width: 50px;
-      height: 50px;
-      background: red;
-      position: relative;
-      transform: rotate(-45deg);
-      margin-bottom: 20px;
-      animation: beat 1s infinite;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: '';
-      width: 50px;
-      height: 50px;
-      background: red;
-      border-radius: 50%;
-      position: absolute;
-      top: -25px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: 25px;
-      top: 0;
-    }
-
-    @keyframes beat {
-      0%, 100% {
-        transform: scale(1) rotate(-45deg);
-      }
-      50% {
-        transform: scale(1.1) rotate(-45deg);
-      }
-    }
-
-    .progress-bar {
-      width: 80%;
-      height: 10px;
-      background: #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress {
-      width: 0%;
-      height: 100%;
-      background: #ff6f61;
-      transition: width 0.1s linear;
-    }
-
-    .card-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-      z-index: 5;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-      padding: 30px;
-      text-align: center;
-      max-width: 400px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    .card.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card h1 {
-      color: #ff6f61;
-      margin-bottom: 20px;
-      font-size: 24px;
-    }
-
-    .card p {
-      color: #555;
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .flower {
-      position: absolute;
-      bottom: 20%;
-      width: 80px;
-      height: 80px;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Red_flower.svg/1200px-Red_flower.svg.png') no-repeat center/contain;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    .flower.left {
-      left: 10%;
-    }
-
-    .flower.right {
-      right: 10%;
-    }
-
-    .flower.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Jacky</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #a4508b, #5f0a87);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #loader {
+            position: relative;
+            text-align: center;
+        }
+        #loader .heart {
+            width: 50px;
+            height: 50px;
+            background: red;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: beat 1s infinite;
+        }
+        #loader .heart::before,
+        #loader .heart::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: red;
+            border-radius: 50%;
+        }
+        #loader .heart::before {
+            top: -25px;
+            left: 0;
+        }
+        #loader .heart::after {
+            top: 0;
+            left: 25px;
+        }
+        @keyframes beat {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+        .progress {
+            margin-top: 150px;
+            color: white;
+            font-size: 1.5rem;
+        }
+        #message {
+            display: none;
+            text-align: center;
+        }
+        #message h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        #message p {
+            font-size: 1.2rem;
+            margin: 15px;
+        }
+        #message {
+            display: none;
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="loader">
-    <div class="heart"></div>
-    <div class="progress-bar">
-      <div class="progress" id="progress"></div>
+    <div id="loader">
+        <div class="heart"></div>
+        <div class="progress">Cargando... 0%</div>
     </div>
-  </div>
-
-  <div class="card-container" id="card-container">
-    <div class="card" id="card">
-      <h1>Para Jacky 💖</h1>
-      <p>
-      Me alegro de haberte conocido, nunca pense conocer a
-      una chica tan increible como tu, inteligente, muy creativa,
-      linda, cariñosa y chiquita ^^ pero con un gran corazón.<br>
-      <br>
-      Estoy feliz de estar contigo, y soy feliz al ver todo
-      lo que has logrado y seguirás logrando! Y quiero poner
-      más cosas pero no me alcanzaría la pagina ;p<br>
-      <br>
-      Te amo más de lo que las palabras pueden expresar.<br>💜
-      </p>
+    <div id="message">
+        <h1>Para Jacky</h1>
+        <p>Jacky, me alegro de haberte conocido, nunca pense conocer a una chica tan increible como tu, inteligente, muy creativa, cariñosa, muy bonita, y chiquita ^^ pero con un gran corazón. Te admiro y soy feliz de ver todo lo que has hecho y seguirás haciendo! Quiero estar ahí para ti cada día, y apoyarte en lo que pueda. Te amo Jacqueline Rodriguez Garcia, más de lo que las palabras pueden expresar ♡</p>
     </div>
-    <div class="flower left" id="flower-left"></div>
-    <div class="flower right" id="flower-right"></div>
-  </div>
+    <script>
+        let progress = 0;
+        const progressElement = document.querySelector(".progress");
+        const loaderElement = document.getElementById("loader");
+        const messageElement = document.getElementById("message");
+        const heartElement = document.querySelector(".heart");
 
-  <script>
-    const progress = document.getElementById('progress');
-    const loader = document.getElementById('loader');
-    const cardContainer = document.getElementById('card-container');
-    const card = document.getElementById('card');
-    const flowerLeft = document.getElementById('flower-left');
-    const flowerRight = document.getElementById('flower-right');
+        const interval = setInterval(() => {
+            progress += 1;
+            progressElement.textContent = `Cargando... ${progress}%`;
 
-    let width = 0;
-
-    const interval = setInterval(() => {
-      if (width >= 100) {
-        clearInterval(interval);
-        loader.style.display = 'none';
-        cardContainer.style.display = 'flex';
-        setTimeout(() => {
-          card.classList.add('show');
-          flowerLeft.classList.add('show');
-          flowerRight.classList.add('show');
-        }, 500);
-      } else {
-        width += 1;
-        progress.style.width = width + '%';
-      }
-    }, 50);
-  </script>
+            if (progress === 100) {
+                clearInterval(interval);
+                heartElement.style.transition = "transform 1.5s ease-in-out";
+                heartElement.style.transform = "translate(-50%, -50%) scale(50)";
+                setTimeout(() => {
+                    loaderElement.style.display = "none";
+                    messageElement.style.display = "block";
+                }, 1500);
+            }
+        }, 50);
+    </script>
 </body>
 </html>
