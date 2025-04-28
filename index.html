@@ -8,8 +8,7 @@
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #a4508b, #5f0a87);
-            color: white;
+            background: #5f0a87;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,64 +16,72 @@
             overflow: hidden;
         }
         #loader {
-            position: relative;
             text-align: center;
+            position: relative;
+            width: 80%;
         }
-        #loader .heart {
-            width: 50px;
-            height: 50px;
-            background: red;
+        .progress-bar {
+            position: relative;
+            height: 20px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .heart {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            animation: beat 1s infinite;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            background: red;
+            transform: translateY(-50%);
+            animation: beat 1.5s infinite;
         }
-        #loader .heart::before,
-        #loader .heart::after {
+        .heart::before,
+        .heart::after {
             content: '';
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
             background: red;
             border-radius: 50%;
         }
-        #loader .heart::before {
-            top: -25px;
+        .heart::before {
+            top: -15px;
             left: 0;
         }
-        #loader .heart::after {
+        .heart::after {
             top: 0;
-            left: 25px;
+            left: 15px;
         }
         @keyframes beat {
             0%, 100% {
-                transform: translate(-50%, -50%) scale(1);
+                transform: translateY(-50%) scale(1);
             }
             50% {
-                transform: translate(-50%, -50%) scale(1.2);
+                transform: translateY(-50%) scale(1.2);
             }
-        }
-        .progress {
-            margin-top: 150px;
-            color: white;
-            font-size: 1.5rem;
         }
         #message {
             display: none;
             text-align: center;
+            color: white;
+            padding: 20px;
+            border: 2px solid white;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #a4508b, #5f0a87);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s forwards;
         }
         #message h1 {
             font-size: 2.5rem;
             margin: 0;
+            margin-bottom: 10px;
         }
         #message p {
             font-size: 1.2rem;
-            margin: 15px;
-        }
-        #message {
-            display: none;
-            animation: fadeIn 2s forwards;
+            margin: 10px 0;
         }
         @keyframes fadeIn {
             from {
@@ -84,35 +91,60 @@
                 opacity: 1;
             }
         }
+        .expand-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: red;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 1000;
+            animation: expand 1.5s forwards;
+        }
+        @keyframes expand {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(100);
+                background: #5f0a87;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="loader">
-        <div class="heart"></div>
-        <div class="progress">Cargando... 0%</div>
+        <div class="progress-bar">
+            <div class="heart"></div>
+        </div>
     </div>
     <div id="message">
         <h1>Para Jacky</h1>
-        <p>Jacky, me alegro de haberte conocido, nunca pense conocer a una chica tan increible como tu, inteligente, muy creativa, cariñosa, muy bonita, y chiquita ^^ pero con un gran corazón. Te admiro y soy feliz de ver todo lo que has hecho y seguirás haciendo! Quiero estar ahí para ti cada día, y apoyarte en lo que pueda. Te amo Jacqueline Rodriguez Garcia, más de lo que las palabras pueden expresar ♡</p>
+        <p>Jacky, me alegro de haberte conocido, nunca pensé conocer a una chica tan increíble como tú: inteligente, creativa, cariñosa, muy bonita, y chiquita ^^ pero con un gran corazón. Te admiro y soy feliz de ver todo lo que has hecho y seguirás haciendo. Quiero estar ahí para ti cada día y apoyarte en lo que pueda. Te amo Jacqueline Rodríguez García, más de lo que las palabras pueden expresar. ♡</p>
     </div>
     <script>
+        const progressBar = document.querySelector('.progress-bar');
+        const heart = document.querySelector('.heart');
+        const loader = document.getElementById('loader');
+        const message = document.getElementById('message');
         let progress = 0;
-        const progressElement = document.querySelector(".progress");
-        const loaderElement = document.getElementById("loader");
-        const messageElement = document.getElementById("message");
-        const heartElement = document.querySelector(".heart");
 
         const interval = setInterval(() => {
             progress += 1;
-            progressElement.textContent = `Cargando... ${progress}%`;
+            heart.style.left = `${progress}%`;
 
             if (progress === 100) {
                 clearInterval(interval);
-                heartElement.style.transition = "transform 1.5s ease-in-out";
-                heartElement.style.transform = "translate(-50%, -50%) scale(50)";
+                const expandHeart = document.createElement('div');
+                expandHeart.classList.add('expand-heart');
+                document.body.appendChild(expandHeart);
+
                 setTimeout(() => {
-                    loaderElement.style.display = "none";
-                    messageElement.style.display = "block";
+                    loader.style.display = 'none';
+                    expandHeart.remove();
+                    message.style.display = 'block';
                 }, 1500);
             }
         }, 50);
