@@ -28,18 +28,9 @@
             border-radius: 10px;
             overflow: hidden;
         }
-        .progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: rgba(255, 255, 255, 0.6);
-            transition: width 0.05s linear;
-        }
         .heart {
             position: absolute;
-            top: -30px;
+            top: -15px;
             width: 30px;
             height: 30px;
             background: red;
@@ -118,16 +109,14 @@
 <body>
     <div id="loader">
         <div class="progress-bar">
-            <div class="progress"></div>
+            <div class="heart"></div>
         </div>
-        <div class="heart"></div>
     </div>
     <div id="message">
         <h1>Para Jacky</h1>
         <p>Jacky, me alegro de haberte conocido, nunca pensé conocer a una chica tan increíble como tú: inteligente, creativa, cariñosa, muy bonita, y chiquita ^^ pero con un gran corazón. Te admiro y soy feliz de ver todo lo que has hecho y seguirás haciendo. Quiero estar ahí para ti cada día y apoyarte en lo que pueda. Te amo Jacqueline Rodríguez García, más de lo que las palabras pueden expresar. ♡</p>
     </div>
     <script>
-        const progressBar = document.querySelector('.progress');
         const heart = document.querySelector('.heart');
         const loader = document.getElementById('loader');
         const message = document.getElementById('message');
@@ -135,13 +124,25 @@
 
         const interval = setInterval(() => {
             progress += 1;
-            progressBar.style.width = `${progress}%`;
             heart.style.left = `${progress}%`;
 
             if (progress === 100) {
                 clearInterval(interval);
-                loader.style.display = 'none';
-                message.style.display = 'block';
+                const expandHeart = document.createElement('div');
+                expandHeart.classList.add('heart');
+                expandHeart.style.position = "absolute";
+                expandHeart.style.top = "50%";
+                expandHeart.style.left = "50%";
+                expandHeart.style.transform = "translate(-50%, -50%) scale(100)";
+                expandHeart.style.zIndex = "1000";
+                expandHeart.style.background = "#5f0a87";
+                document.body.appendChild(expandHeart);
+
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    expandHeart.remove();
+                    message.style.display = 'block';
+                }, 1500);
             }
         }, 50);
     </script>
